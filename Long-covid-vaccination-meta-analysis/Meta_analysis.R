@@ -1,13 +1,21 @@
+
 # Load required libraries
-library('meta')
+packages <- c("meta", "dplyr", "openxlsx", "readxl")
+
+for (pkg in packages) {
+  if (!require(pkg, character.only = TRUE)) {
+    install.packages(pkg, dependencies = TRUE)
+    library(pkg, character.only = TRUE)
+  }
+}
+
+
+
 settings.meta(CIbracket = "(", CIseparator = " - ")
 
-library('dplyr')
-library(openxlsx)
-library(readxl)
-
+#Data should be available in the supplementary section of the study
 # Get sheet names from Excel file
-sheet_names <- excel_sheets('Sensitivity analyses A.xlsx')
+sheet_names <- excel_sheets('Meta_analysis_data.xlsx')
 
 # Create a folder for each sheet using sanitized sheet name
 for (i in 1:length(sheet_names)){
@@ -19,7 +27,7 @@ for (i in 1:length(sheet_names)){
 for (i in 1:length(sheet_names)){
   
   # Read data from current sheet
-  dat1 <- readxl::read_xlsx('Sensitivity analyses A.xlsx', sheet = i)
+  dat1 <- readxl::read_xlsx('Meta_analysis_data.xlsx', sheet = i)
   
   # Assign group IDs based on 'Analysis'
   dat1 <- dat1 %>%
